@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 const EMOJIS_TECH = ['💻', '🖥️', '📱', '⌨️', '🖱️', '🖨️', '🎧', '📦', '🗄️', '🛠️', '🔌', '🔋'];
 
-// CORRECCIÓN: Ahora recibe onProductoGuardado y productoAEditar
 export default function AddProductModal({ isOpen, onClose, onProductoGuardado, productoAEditar }) {
   const initialState = {
     tipo: 'individual', 
@@ -20,7 +19,6 @@ export default function AddProductModal({ isOpen, onClose, onProductoGuardado, p
   const [nuevaCarac, setNuevaCarac] = useState({ clave: '', valor: '' });
   const [mostrarEmojis, setMostrarEmojis] = useState(false);
 
-  // CORRECCIÓN: Usamos productoAEditar
   useEffect(() => {
     if (productoAEditar) {
       setFormData({ ...initialState, ...productoAEditar });
@@ -69,7 +67,6 @@ export default function AddProductModal({ isOpen, onClose, onProductoGuardado, p
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
-    // CORRECCIÓN: Llamamos a onProductoGuardado
     onProductoGuardado(formData);
     setNuevaCarac({ clave: '', valor: '' });
   };
@@ -78,7 +75,7 @@ export default function AddProductModal({ isOpen, onClose, onProductoGuardado, p
     <div className="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div className="fixed inset-0 bg-gray-900/75 backdrop-blur-sm transition-opacity"></div>
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
           <div className="relative transform flex flex-col max-h-[90vh] overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-slate-100">
             
             <div className="shrink-0 bg-slate-50 px-4 py-4 sm:px-6 border-b border-slate-100 flex items-center justify-between">
@@ -117,7 +114,7 @@ export default function AddProductModal({ isOpen, onClose, onProductoGuardado, p
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-semibold text-slate-700">Nombre / Modelo del Producto</label>
-                    <input type="text" name="modelo" value={formData.modelo} onChange={handleChange} required className="mt-1 w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none" placeholder={formData.tipo === 'grupo' ? "Ej: Ratones Inalámbricos Logitech" : "Ej: HP 840 G3"} />
+                    <input type="text" name="modelo" value={formData.modelo} onChange={handleChange} required className="mt-1 w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none placeholder:text-slate-400 max-[360px]:placeholder:text-transparent transition-all" placeholder={formData.tipo === 'grupo' ? "Ej: Ratones Inalámbricos Logitech" : "Ej: HP 840 G3"} />
                   </div>
 
                   <div className="relative">
@@ -129,7 +126,7 @@ export default function AddProductModal({ isOpen, onClose, onProductoGuardado, p
                         value={formData.imagen} 
                         onChange={handleChange} 
                         disabled={!!formData.emoji} 
-                        className="flex-1 rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none disabled:bg-slate-50 disabled:text-slate-400" 
+                        className="flex-1 rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none disabled:bg-slate-50 disabled:text-slate-400 placeholder:text-slate-400 max-[360px]:placeholder:text-transparent transition-all" 
                         placeholder={formData.emoji ? "Icono seleccionado" : "https://ejemplo.com/foto.jpg"} 
                       />
                       
@@ -172,12 +169,12 @@ export default function AddProductModal({ isOpen, onClose, onProductoGuardado, p
                     <label className="block text-sm font-semibold text-slate-700">
                       {formData.tipo === 'individual' ? 'Número de Serie (S/N)' : 'Identificador (Opcional)'}
                     </label>
-                    <input type="text" name="sn" value={formData.sn} onChange={handleChange} required={formData.tipo === 'individual'} className="mt-1 w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none" placeholder={formData.tipo === 'individual' ? "Ej: 98H9H034H" : "Ej: Lote-B2"} />
+                    <input type="text" name="sn" value={formData.sn} onChange={handleChange} required={formData.tipo === 'individual'} className="mt-1 w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none placeholder:text-slate-400 max-[360px]:placeholder:text-transparent transition-all" placeholder={formData.tipo === 'individual' ? "Ej: 98H9H034H" : "Ej: Lote-B2"} />
                   </div>
 
                   <div>
                     <label className="block text-sm font-semibold text-slate-700">Ubicación</label>
-                    <input type="text" name="ubicacion" value={formData.ubicacion} onChange={handleChange} className="mt-1 w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none" placeholder="Ej: 2F, Armario B" />
+                    <input type="text" name="ubicacion" value={formData.ubicacion} onChange={handleChange} className="mt-1 w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none placeholder:text-slate-400 max-[360px]:placeholder:text-transparent transition-all" placeholder="Ej: 2F, Armario B" />
                   </div>
 
                   <div>
@@ -210,10 +207,16 @@ export default function AddProductModal({ isOpen, onClose, onProductoGuardado, p
 
                   <div className="flex items-end gap-2">
                     <div className="flex-1">
-                      <input type="text" placeholder="Atributo (Ej: Color)" value={nuevaCarac.clave} onChange={(e) => setNuevaCarac({ ...nuevaCarac, clave: e.target.value })} className="w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none" />
+                      {/* Mostrar en grande (>455px) */}
+                      <input type="text" placeholder="Atributo (Ej: Color)" value={nuevaCarac.clave} onChange={(e) => setNuevaCarac({ ...nuevaCarac, clave: e.target.value })} className="hidden min-[456px]:block w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none placeholder:text-slate-400 transition-all" />
+                      {/* Mostrar en pequeño (<=455px), transparente a los 360px */}
+                      <input type="text" placeholder="Clave" value={nuevaCarac.clave} onChange={(e) => setNuevaCarac({ ...nuevaCarac, clave: e.target.value })} className="block min-[456px]:hidden w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none placeholder:text-slate-400 max-[360px]:placeholder:text-transparent transition-all" />
                     </div>
                     <div className="flex-1">
-                      <input type="text" placeholder="Valor (Ej: Negro)" value={nuevaCarac.valor} onChange={(e) => setNuevaCarac({ ...nuevaCarac, valor: e.target.value })} className="w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none" />
+                      {/* Mostrar en grande (>455px) */}
+                      <input type="text" placeholder="Valor (Ej: Negro)" value={nuevaCarac.valor} onChange={(e) => setNuevaCarac({ ...nuevaCarac, valor: e.target.value })} className="hidden min-[456px]:block w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none placeholder:text-slate-400 transition-all" />
+                      {/* Mostrar en pequeño (<=455px), transparente a los 360px */}
+                      <input type="text" placeholder="Valor" value={nuevaCarac.valor} onChange={(e) => setNuevaCarac({ ...nuevaCarac, valor: e.target.value })} className="block min-[456px]:hidden w-full rounded-lg border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm outline-none placeholder:text-slate-400 max-[360px]:placeholder:text-transparent transition-all" />
                     </div>
                     <button type="button" onClick={handleAñadirEspecificacion} className="rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-200 transition-colors">Añadir</button>
                   </div>
