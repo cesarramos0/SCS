@@ -20,12 +20,13 @@ export default function ProductDetailModal({ isOpen, producto, onClose, onEdit, 
             <div className="md:w-2/5 bg-slate-50 p-6 flex flex-col items-center border-b md:border-b-0 md:border-r border-slate-100">
               <div className="relative w-full aspect-square rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5 flex items-center justify-center p-4 mb-6">
                  
-                 {/* 2. AQUÍ ES DONDE SE PONE LA IMAGEN SEGURA */}
-                 <SecureImg 
-                   src={producto.imagen} 
-                   alt={producto.modelo} 
-                   className="w-full h-full object-contain" 
-                 />
+                {producto.emoji ? (
+                  <div className="w-full h-full flex items-center justify-center text-9xl select-none">
+                    {producto.emoji}
+                  </div>
+                ) : (
+                  <SecureImg src={producto.imagen} alt={producto.modelo} className="w-full h-full object-contain" />
+                )}
 
               </div>
               

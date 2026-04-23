@@ -1,57 +1,56 @@
 import { useState } from 'react';
 import AddProductModal from './components/AddProductModal';
 import ProductDetailModal from './components/ProductDetailModal';
-import SecureImg from './components/SecureImg'; // <-- Importamos nuestro escudo
+import SecureImg from './components/SecureImg';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
-  const [equipoAEditar, setEquipoAEditar] = useState(null);
+  // CORRECCIÓN: Arreglado el camelCase (Producto en lugar de producto)
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  const [productoAEditar, setProductoAEditar] = useState(null);
   
-  // NUEVO: Estado para el buscador
   const [busquedaSN, setBusquedaSN] = useState('');
 
-  const [equipos, setEquipos] = useState([
+  const [productos, setProductos] = useState([
     { 
       id: 1, 
       modelo: 'HP 840 G3', 
       sn: '98H9H034H', 
       estado: 'Óptimo',
       ubicacion: '2F', 
-      imagen: '', // Ahora los equipos tienen campo imagen
+      imagen: '',
       especificaciones: { "Procesador": "i5", "RAM": "16GB" } 
     }
   ]);
 
-  // NUEVO: Filtramos la lista de equipos en vivo según lo que se escriba en el buscador
-  const equiposFiltrados = equipos.filter((producto) => 
+  const productosFiltrados = productos.filter((producto) => 
     producto.sn.toLowerCase().includes(busquedaSN.toLowerCase())
   );
 
-  const guardarEquipo = (equipoGuardado) => {
-    if (equipoGuardado.id) {
-      setEquipos(equipos.map(e => e.id === equipoGuardado.id ? equipoGuardado : e));
+  const guardarProducto = (productoGuardado) => {
+    if (productoGuardado.id) {
+      setProductos(productos.map(e => e.id === productoGuardado.id ? productoGuardado : e));
     } else {
-      const equipoConId = { ...equipoGuardado, id: Date.now() };
-      setEquipos([...equipos, equipoConId]);
+      const productoConId = { ...productoGuardado, id: Date.now() };
+      setProductos([...productos, productoConId]);
     }
     setIsModalOpen(false); 
-    setEquipoAEditar(null);
+    setProductoAEditar(null);
   };
 
-  const borrarEquipo = (id) => {
-    setEquipos(equipos.filter(e => e.id !== id));
-    setEquipoSeleccionado(null);
+  const borrarProducto = (id) => {
+    setProductos(productos.filter(e => e.id !== id));
+    setProductoSeleccionado(null);
   };
 
   const abrirEdicion = (producto) => {
-    setEquipoSeleccionado(null);
-    setEquipoAEditar(producto);
+    setProductoSeleccionado(null);
+    setProductoAEditar(producto);
     setIsModalOpen(true);
   };
 
   const abrirCreacion = () => {
-    setEquipoAEditar(null);
+    setProductoAEditar(null);
     setIsModalOpen(true);
   };
 
@@ -70,7 +69,6 @@ function App() {
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg className="size-4 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
               </div>
-              {/* NUEVO: Conectamos el input al estado de busqueda */}
               <input 
                 type="search" 
                 value={busquedaSN}
@@ -92,20 +90,22 @@ function App() {
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           
-          {/* NUEVO: Dibujamos 'equiposFiltrados' en lugar de todos los 'equipos' */}
-          {equiposFiltrados.map((producto) => (
-            <div key={producto.id} onClick={() => setEquipoSeleccionado(producto)} className="group relative flex flex-col bg-white rounded-3xl p-3 sm:p-4 shadow-sm ring-1 ring-slate-200/60 hover:shadow-xl hover:ring-slate-300 transition-all duration-300 cursor-pointer overflow-hidden">
+          {productosFiltrados.map((producto) => (
+            <div key={producto.id} onClick={() => setProductoSeleccionado(producto)} className="group relative flex flex-col bg-white rounded-3xl p-3 sm:p-4 shadow-sm ring-1 ring-slate-200/60 hover:shadow-xl hover:ring-slate-300 transition-all duration-300 cursor-pointer overflow-hidden">
               <div className="relative aspect-[4/3] w-full bg-slate-50 rounded-2xl overflow-hidden mb-4 p-4">
-                {/* ... Badge de estado ... */}
                 <div className={`absolute top-3 left-3 flex items-center gap-1.5 bg-white/80 backdrop-blur-sm border text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm z-10 ${producto.estado === 'Óptimo' ? 'border-green-200 text-green-700' : 'border-amber-200 text-amber-700'}`}>
                   {producto.estado}
                 </div>
                 
-                {/* NUEVO: Usamos SecureImg */}
-                <SecureImg src={producto.imagen} alt={producto.modelo} className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" />
+                {producto.emoji ? (
+                  <div className="w-full h-full flex items-center justify-center text-6xl select-none">
+                    {producto.emoji}
+                  </div>
+                ) : (
+                  <SecureImg src={producto.imagen} alt={producto.modelo} className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" />
+                )}
               </div>
               
-              {/* ... Resto de la info de la tarjeta (se queda igual) ... */}
               <div className="flex flex-col flex-1 px-2 pb-1">
                 <h3 className="text-lg font-bold text-slate-900 mb-2 leading-tight group-hover:text-indigo-600 transition-colors">{producto.modelo}</h3>
                 {producto.especificaciones && Object.keys(producto.especificaciones).length > 0 && (
@@ -120,26 +120,45 @@ function App() {
                 )}
                 <div className="mt-auto flex items-center justify-between pt-2 border-t border-slate-100">
                   <div className="flex items-center gap-1.5 rounded-md">
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">S/N:</span>
-                    <code className="text-xs font-bold text-slate-700">{producto.sn}</code>
+                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                      {producto.tipo === 'grupo' ? 'LOTE:' : 'S/N:'}
+                    </span>
+                    <code className="text-xs font-bold text-slate-700">{producto.sn || '-'}</code>
                   </div>
-                  {producto.ubicacion && <span className="text-xs font-bold text-red-500">{producto.ubicacion}</span>}
+                  
+                  <div className="flex gap-3">
+                    {producto.tipo === 'grupo' && (
+                      <span className="text-xs font-bold bg-indigo-50 text-indigo-700 px-2 rounded">x{producto.cantidad}</span>
+                    )}
+                    {producto.ubicacion && <span className="text-xs font-bold text-red-500">{producto.ubicacion}</span>}
+                  </div>
                 </div>
               </div>
             </div>
           ))}
 
-          {/* Mensaje por si la búsqueda no encuentra nada */}
-          {equiposFiltrados.length === 0 && (
+          {productosFiltrados.length === 0 && (
             <div className="col-span-full py-12 text-center text-slate-500">
-              No se encontraron equipos con ese S/N.
+              No se encontraron productos con ese S/N.
             </div>
           )}
         </div>
       </main>
 
-      <AddProductModal isOpen={isModalOpen} onClose={() => { setIsModalOpen(false); setEquipoAEditar(null); }} onEquipoGuardado={guardarEquipo} equipoAEditar={equipoAEditar} />
-      <ProductDetailModal isOpen={equipoSeleccionado !== null} producto={equipoSeleccionado} onClose={() => setEquipoSeleccionado(null)} onEdit={abrirEdicion} onDelete={borrarEquipo} />
+      {/* CORRECCIÓN: Nombres de las props y estados arreglados */}
+      <AddProductModal 
+        isOpen={isModalOpen} 
+        onClose={() => { setIsModalOpen(false); setProductoAEditar(null); }} 
+        onProductoGuardado={guardarProducto} 
+        productoAEditar={productoAEditar} 
+      />
+      <ProductDetailModal 
+        isOpen={productoSeleccionado !== null} 
+        producto={productoSeleccionado} 
+        onClose={() => setProductoSeleccionado(null)} 
+        onEdit={abrirEdicion} 
+        onDelete={borrarProducto} 
+      />
     </div>
   );
 }
