@@ -7,7 +7,7 @@ from db.mongodb import get_database
 from modules.auth.schemas import Token, UserCreate, UserResponse
 from modules.auth.service import authenticate_user, create_user
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(tags=["auth"])
 
 
 @router.post("/login", response_model=Token)

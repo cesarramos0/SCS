@@ -5,7 +5,7 @@ from db.mongodb import get_database
 from modules.products.schemas import ProductCreate, ProductResponse, ProductUpdate
 from modules.products.service import ProductService
 
-router = APIRouter(prefix="/products", tags=["products"])
+router = APIRouter(tags=["products"])
 
 
 def get_product_service(db: AsyncIOMotorDatabase = Depends(get_database)) -> ProductService:

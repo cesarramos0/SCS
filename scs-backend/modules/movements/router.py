@@ -5,7 +5,7 @@ from db.mongodb import get_database
 from modules.movements.schemas import MovementCreate, MovementResponse
 from modules.movements.service import MovementService
 
-router = APIRouter(prefix="/movements", tags=["movements"])
+router = APIRouter(tags=["movements"])
 
 
 def get_movement_service(db: AsyncIOMotorDatabase = Depends(get_database)) -> MovementService:

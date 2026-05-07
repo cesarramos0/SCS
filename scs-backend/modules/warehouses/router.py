@@ -5,7 +5,7 @@ from db.mongodb import get_database
 from modules.warehouses.schemas import WarehouseCreate, WarehouseResponse
 from modules.warehouses.service import WarehouseService
 
-router = APIRouter(prefix="/warehouses", tags=["warehouses"])
+router = APIRouter(tags=["warehouses"])
 
 
 def get_warehouse_service(db: AsyncIOMotorDatabase = Depends(get_database)) -> WarehouseService:
