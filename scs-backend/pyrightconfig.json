@@ -1,0 +1,8 @@
+{
+  "pythonVersion": "3.13",
+  "pythonPath": ".venv\\Scripts\\python.exe",
+  "include": [
+    "."
+  ],
+  "typeCheckingMode": "basic"
+}

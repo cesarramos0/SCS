@@ -1,22 +1,23 @@
-# Logs
-logs
+# --- Reglas Globales (Afectan a Back y Front) ---
+node_modules/
+dist/
+dist-ssr/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
 *.local
-
-# Editor directories and files
+.DS_Store
+.idea
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+
+# --- Reglas Específicas del Backend ---
+scs-backend/.env
+
+# --- Archivos de sistema/editor ---
 *.suo
 *.ntvs*
 *.njsproj
