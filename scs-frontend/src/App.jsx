@@ -1,4 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+
+const getScrollbarWidth = () => {
+  const el = document.createElement('div');
+  el.style.cssText = 'overflow:scroll;visibility:hidden;position:absolute';
+  document.body.appendChild(el);
+  const width = el.offsetWidth - el.clientWidth;
+  el.remove();
+  return width;
+};
 import AddProductModal from './components/AddProductModal';
 import ProductDetailModal from './components/ProductDetailModal';
 import SecureImg from './components/SecureImg';
@@ -16,6 +25,19 @@ import {
 
 function App() {
   const [pagina, setPagina] = useState('inventario'); // 'inventario' | 'estadisticas'
+
+  const navRef    = useRef(null);
+  const headerRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const sw = getScrollbarWidth();
+    if (sw === 0) return;
+    const hasScroll = document.documentElement.scrollHeight > document.documentElement.clientHeight;
+    const val = hasScroll ? '' : `${sw}px`;
+    document.body.style.paddingRight = val;
+    if (navRef.current)    navRef.current.style.paddingRight    = val;
+    if (headerRef.current) headerRef.current.style.paddingRight = val;
+  }, [pagina]);
 
   const [isModalOpen, setIsModalOpen]           = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
@@ -160,7 +182,7 @@ function App() {
   return (
     <div className="min-h-full">
       {/* Navbar */}
-      <nav className="bg-gray-800/50">
+      <nav ref={navRef} className="bg-gray-800/50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex shrink-0 items-center">
@@ -208,7 +230,7 @@ function App() {
 
       {/* Header / Buscador — solo en inventario */}
       {pagina === 'inventario' && (
-        <header className="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:inset-y-0 after:border-y after:border-white/10">
+        <header ref={headerRef} className="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:inset-y-0 after:border-y after:border-white/10">
           <div className="mx-auto flex max-w-7xl items-center gap-3 sm:gap-6 px-4 py-4 sm:py-6 sm:px-6 lg:px-8">
             <div className="shrink-0 hidden sm:block">
               <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-white truncate">Inventario</h1>
@@ -268,7 +290,7 @@ function App() {
 
       {/* Header estadísticas */}
       {pagina === 'estadisticas' && (
-        <header className="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:inset-y-0 after:border-y after:border-white/10">
+        <header ref={headerRef} className="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:inset-y-0 after:border-y after:border-white/10">
           <div className="mx-auto flex max-w-7xl items-center px-4 py-4 sm:py-6 sm:px-6 lg:px-8">
             <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-white">Estadísticas</h1>
           </div>

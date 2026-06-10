@@ -4,6 +4,3 @@
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/aspect-ratio";
 
-html {
-  scrollbar-gutter: stable;
-}
